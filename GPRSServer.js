@@ -26,12 +26,11 @@ net.listen(gprs_port, function(){
 });
 
 function handler (socket) {
-	//Function that handles the connection between the AVL and the server.
-	//Handle incoming messages from avl.
+	//Function that handles the connection between the gprs module and the server.
+	//Handle incoming messages from gprs module.
 	socket.on('data', function (data) {	
 		encode(socket, data);    	
   	});
-	//Remove the client from the list when it leaves
 	socket.on('end', function () {  
 		eventEmitter.emit('disconnected', socket.imei);
 		console.log("Connection has been closed.");	
@@ -50,7 +49,7 @@ function encode(socket, data) {
 	var log = {'date': date['date'], 'time': date['time'], 'data': data.toString()};
 	//Store data in mongodb
 	mongo.push_data(log);
-	////Send the data to socket.io
+	////Send the data by socket.io
 	io.sockets.emit('new data', data);
 }
 
