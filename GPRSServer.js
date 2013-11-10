@@ -32,12 +32,10 @@ function handler (socket) {
 		encode(socket, data);    	
   	});
 	socket.on('end', function () {  
-		eventEmitter.emit('disconnected', socket.imei);
 		console.log("Connection has been closed.");	
 	});
 	//Emitted once the socket is fully closed
 	socket.on('close', function(){
-		eventEmitter.emit('disconnected', socket.imei);
 		console.log('Connection has been closed.')
 	});
 }
@@ -50,7 +48,7 @@ function encode(socket, data) {
 	//Store data in mongodb
 	mongo.push_data(log);
 	////Send the data by socket.io
-	io.sockets.emit('new data', data);
+	io.sockets.emit('new data', log);
 }
 
 function get_date(){
